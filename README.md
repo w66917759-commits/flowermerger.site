@@ -72,4 +72,18 @@ Merge Flowers is an HTML5 browser game focused on flower sorting, matching, and 
 
 ## Deploy
 
-Push this folder to its own public GitHub repository and enable GitHub Pages or connect it to a static host.
+Recommended main-system flow:
+
+```bash
+pnpm project:repo -- --slug merge-flowers --init-git --commit --create-github
+pnpm project:vercel -- --slug merge-flowers
+```
+
+Then configure DNS at the registrar:
+
+```txt
+@     A     76.76.21.21
+www   A     76.76.21.21
+```
+
+Remove parking/forwarding records for `@` and `www`. `_domainconnect` TXT can stay.
