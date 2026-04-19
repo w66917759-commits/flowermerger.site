@@ -25,9 +25,9 @@ Play Merge Flowers now, a free browser merge puzzle that loads in seconds. No do
 
 ## Keyword Variations
 
-- Play Merge Flowers online free
-- Merge Flowers unblocked in browser
-- Merge Flowers free to play — no download
+- Play Merge Flowers online game free
+- Merge Flowers unblocked online game
+- Merge Flowers free game no download
 
 ## Internal Link Targets
 
