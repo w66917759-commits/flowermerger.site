@@ -712,7 +712,7 @@
         </div>
       </div>
       
-      <script type="application/json" data-embed-options>[{"key":"gamedistribution-primary","label":"1号链接","title":"Merge Flowers — Play Online Free","sourceId":"gamedistribution","sourceUrl":"https://gamedistribution.com/games/merge-flowers/","embedUrl":"https://html5.gamedistribution.com/2e5863b7cc10444a88f72c81e74502f1/?gd_sdk_referrer_url=https://gamedistribution.com/games/merge-flowers/","kind":"primary"}]</script>
+      <script type="application/json" data-embed-options>[{"key":"gamedistribution-primary","label":"1号链接","title":"Merge Flowers — Play Online Free","sourceId":"gamedistribution","sourceUrl":"https://gamedistribution.com/games/merge-flowers/","embedUrl":"https://html5.gamedistribution.com/2e5863b7cc10444a88f72c81e74502f1/?gd_sdk_referrer_url=https%3A%2F%2Fflowermerger.site%2Fgame%2Fmerge-flowers","kind":"primary","requiresRegisteredDomain":true}]</script>
       <script>
         (() => {
           const root = document.currentScript?.parentElement;
@@ -738,6 +738,9 @@
           const STUCK_LOAD_MS = 6500;
           let activeIndex = 0;
           let token = 0;
+
+          const isBlockedPreviewDomain = (option) =>
+            option?.requiresRegisteredDomain && /\.vercel\.app$/i.test(window.location.hostname);
 
           const readPerfStore = () => {
             try {
@@ -834,6 +837,11 @@
                 : 'Open the original source page while we keep trying here.';
               return;
             }
+            if (state === 'domain-blocked') {
+              titleNode.textContent = 'Use the production domain for this game';
+              copy.textContent = 'This GameDistribution iframe blocks Vercel preview domains. Open the production domain after it is registered with GameDistribution, or use the original source link.';
+              return;
+            }
             titleNode.textContent = 'Loading ' + option.title;
             copy.textContent = options.length > 1
               ? 'We are waking up the game iframe. If this source stays dark, switch to a backup source or open the original source page.'
@@ -859,6 +867,12 @@
             setButtons();
             setCoverState('loading', option);
             openSource.setAttribute('href', option.sourceUrl || option.embedUrl);
+
+            if (isBlockedPreviewDomain(option)) {
+              frame.setAttribute('src', 'about:blank');
+              setCoverState('domain-blocked', option);
+              return;
+            }
 
             const onLoad = () => {
               if (token !== currentToken) return;
